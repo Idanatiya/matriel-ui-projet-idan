@@ -1,6 +1,7 @@
 import * as React from "react";
 import { TableRow, TableCell, Stack, IconButton } from "@mui/material";
 import { Line } from "react-chartjs-2";
+import styled from "@emotion/styled";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,7 +12,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import styled from "@emotion/styled";
 import { Delete, Compare } from "@mui/icons-material";
 import { HeadCell, RowData } from "../../types/common";
 import { RouteEndpoints } from "../../routes/route";
@@ -25,7 +25,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
 const abbreviate = require("number-abbreviate");
 interface Props {
   row: RowData;
@@ -38,10 +37,10 @@ const Row = ({ row, onDeleteRow, visibleCols }: Props) => {
   const ids = visibleCols.map((col) => col.id);
   return (
     <TableRow key={row.id}>
-      <Cell isVisible={ids.includes("rank")}>
+      <Cell isShown={ids.includes("rank")}>
         <BaseSpan>{row.rank}</BaseSpan>
       </Cell>
-      <Cell isVisible={ids.includes("name")}>
+      <Cell isShown={ids.includes("name")}>
         <img
           style={{ width: 25, objectFit: "cover" }}
           src={row.icon}
@@ -52,26 +51,26 @@ const Row = ({ row, onDeleteRow, visibleCols }: Props) => {
           <CoinSymbol>{row.symbol}</CoinSymbol>
         </Stack>
       </Cell>
-      <Cell isVisible={ids.includes("price")}>
+      <Cell isShown={ids.includes("price")}>
         <Highlight isNegative={row.price < 0}>
           {row.price.toFixed(5)}$
         </Highlight>
       </Cell>
-      <Cell isVisible={ids.includes("priceBtc")}>
+      <Cell isShown={ids.includes("priceBtc")}>
         <BaseSpan>{row.priceBtc.toFixed(6)}</BaseSpan>
       </Cell>
-      <Cell isVisible={ids.includes("marketCap")}>
+      <Cell isShown={ids.includes("marketCap")}>
         <Captlize>{abbreviate(row.marketCap)}</Captlize>
       </Cell>
-      <Cell isVisible={ids.includes("volume")}>
+      <Cell isShown={ids.includes("volume")}>
         <Captlize>{abbreviate(row.volume)}</Captlize>
       </Cell>
-      <Cell isVisible={ids.includes("priceChange1d")}>
+      <Cell isShown={ids.includes("priceChange1d")}>
         <Highlight isNegative={row.priceChange1d < 0}>
           {row.priceChange1d}$
         </Highlight>
       </Cell>
-      <Cell isVisible={ids.includes("priceChange1w")}>
+      <Cell isShown={ids.includes("priceChange1w")}>
         <div style={{ height: 100 }}>
           <Line
             options={{
@@ -108,8 +107,8 @@ const Row = ({ row, onDeleteRow, visibleCols }: Props) => {
   );
 };
 
-const Cell = styled(TableCell)((props: { isVisible: boolean }) => ({
-  opacity: props.isVisible ? 1 : 0,
+const Cell = styled(TableCell)((props: { isShown: boolean }) => ({
+  opacity: props.isShown ? 1 : 0,
   transition: "ease 0.3s",
 }));
 
